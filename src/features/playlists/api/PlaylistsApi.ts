@@ -13,6 +13,10 @@ export const playlistsApi = createApi({
     headers: {
       'API-KEY': import.meta.env.VITE_API_KEY,
     },
+    prepareHeaders: (headers) => {
+      headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
+      return headers
+    },
   }),
 
   endpoints: (build) => ({

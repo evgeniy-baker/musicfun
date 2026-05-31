@@ -9,6 +9,7 @@ export const CreatePlaylistForm = () => {
 
   const onSubmit: SubmitHandler<CreatePlaylistArgs> = (data) => {
     console.log(data)
+    debugger
     createPlaylist(data)
   }
 
