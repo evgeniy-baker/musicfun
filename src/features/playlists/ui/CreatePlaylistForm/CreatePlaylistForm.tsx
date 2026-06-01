@@ -3,14 +3,14 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useCreatePlaylistMutation } from '@/features/playlists/api/PlaylistsApi.ts'
 
 export const CreatePlaylistForm = () => {
-  const { register, handleSubmit } = useForm<CreatePlaylistArgs>()
+  const { register, handleSubmit, reset } = useForm<CreatePlaylistArgs>()
 
   const [createPlaylist] = useCreatePlaylistMutation()
 
   const onSubmit: SubmitHandler<CreatePlaylistArgs> = (data) => {
-    console.log(data)
-    debugger
     createPlaylist(data)
+      .unwrap()
+      .then(() => reset())
   }
 
   return (

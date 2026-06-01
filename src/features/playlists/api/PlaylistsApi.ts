@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type {
-  CreatePlaylistArgs,
   PlaylistData,
   PlaylistsResponse,
+  RequestPlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types.ts'
 
 export const playlistsApi = createApi({
@@ -21,15 +21,63 @@ export const playlistsApi = createApi({
 
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, void>({
-      query: () => 'playlists',
+      query: () => '/playlists',
     }),
 
-    createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistArgs>({
-      query: (body) => ({ method: 'post', url: 'playlists', body }),
+    createPlaylist: build.mutation<{ data: PlaylistData }, { title: string; description: string }>({
+      query: ({ title, description }) => {
+        const body: RequestPlaylistArgs = {
+          data: {
+            type: 'playlists',
+            attributes: {
+              title,
+              description,
+            },
+          },
+        }
+        return {
+          method: 'post',
+          url: '/playlists',
+          body,
+        }
+      },
+    }),
+
+    deletePlaylist: build.mutation<void, string>({
+      query: (playlistId) => {
+        return {
+          method: 'delete',
+          url: `/playlists/${playlistId}`,
+        }
+      },
+    }),
+
+    updatePlaylist: build.mutation<void, void>({
+      query: () => {
+        return {
+          method: 'put',
+          url: `/playlists/ba272a9e-c8ec-4f0a-8292-f85d05cdece8`,
+          body: {
+            data: {
+              type: 'playlists',
+              attributes: {
+                title: '555',
+                description: 'Cool playlist',
+                tagIds: [],
+              },
+            },
+          },
+        }
+      },
     }),
 
     //
   }),
 })
 
-export const { useFetchPlaylistsQuery, useCreatePlaylistMutation } = playlistsApi
+export const {
+  useFetchPlaylistsQuery,
+  useCreatePlaylistMutation,
+  useDeletePlaylistMutation,
+  useUpdatePlaylistMutation,
+} = playlistsApi
