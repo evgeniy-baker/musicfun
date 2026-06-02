@@ -19,8 +19,8 @@ export const PlaylistsPage = () => {
     }
   }
 
-  const updatePlaylistHandler = () => {
-    updatePlaylist()
+  const updatePlaylistHandler = (playlistId: string) => {
+    updatePlaylist({ playlistId, title: 'Update 👌' })
   }
 
   return (
@@ -28,7 +28,7 @@ export const PlaylistsPage = () => {
       <h1>Playlists page</h1>
 
       <CreatePlaylistForm />
-      {/*<UpdatePlaylistForm />*/}
+      <UpdatePlaylistForm />
 
       <div className={s.items}>
         {data?.data.map((playlist) => {
@@ -39,7 +39,7 @@ export const PlaylistsPage = () => {
               <div>userName: {playlist.attributes.user.name}</div>
 
               <button onClick={() => deletePlaylistHandler(playlist.id)}>delete</button>
-              <button onClick={updatePlaylistHandler}>update</button>
+              <button onClick={() => updatePlaylistHandler(playlist.id)}>update</button>
             </div>
           )
         })}

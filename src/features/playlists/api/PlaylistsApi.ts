@@ -52,16 +52,16 @@ export const playlistsApi = createApi({
       },
     }),
 
-    updatePlaylist: build.mutation<void, void>({
-      query: () => {
+    updatePlaylist: build.mutation<void, { playlistId: string; title: string }>({
+      query: ({ playlistId, title }) => {
         return {
           method: 'put',
-          url: `/playlists/ba272a9e-c8ec-4f0a-8292-f85d05cdece8`,
+          url: `/playlists/${playlistId}`,
           body: {
             data: {
               type: 'playlists',
               attributes: {
-                title: '555',
+                title,
                 description: 'Cool playlist',
                 tagIds: [],
               },
