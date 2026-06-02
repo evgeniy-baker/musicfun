@@ -1,38 +1,29 @@
-import {
-  useDeletePlaylistMutation,
-  useFetchPlaylistsQuery,
-  useUpdatePlaylistMutation,
-} from '@/features/playlists/api/PlaylistsApi.ts'
+import { useFetchPlaylistsQuery } from '@/features/playlists/api/PlaylistsApi.ts'
 import s from './PlaylistsPage.module.css'
 import { CreatePlaylistForm } from '@/features/playlists/ui/CreatePlaylistForm/CreatePlaylistForm.tsx'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import type { UpdatePlaylistArgs } from '@/features/playlists/api/playlistsApi.types.ts'
+import type {
+  PlaylistData,
+  UpdatePlaylistArgs,
+} from '@/features/playlists/api/playlistsApi.types.ts'
+import { PlaylistItem } from '@/features/playlists/ui/PlaylistItem/PlaylistItem.tsx'
+import { EditPlaylistForm } from '@/features/playlists/ui/EditPlaylistForm/EditPlaylistForm.tsx'
 
 export const PlaylistsPage = () => {
   const { data } = useFetchPlaylistsQuery()
-  const [deletePlaylist] = useDeletePlaylistMutation()
-  const [updatePlaylist] = useUpdatePlaylistMutation()
+
+  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
   const [playlistId, setPlaylistId] = useState<string | null>(null)
 
-  const deletePlaylistHandler = (playlistId: string) => {
-    if (confirm('Вы хотите удалить плэйлист?')) {
-      deletePlaylist(playlistId)
-    }
-  }
-
-  const editPlaylistHandler = (playlistId: null | string) => {
-    if (playlistId) {
-      setPlaylistId(playlistId)
+  const editPlaylistHandler = (playlist: PlaylistData | null) => {
+    if (playlist) {
+      setPlaylistId(playlist.id)
+      reset({ title: playlist.attributes.title })
     } else {
       setPlaylistId(null)
     }
-  }
-
-  const { register, handleSubmit } = useForm<UpdatePlaylistArgs>()
-  const onSubmit: SubmitHandler<UpdatePlaylistArgs> = ({ title, description }) => {
-    updatePlaylist({ playlistId, title, description })
   }
 
   return (
@@ -48,28 +39,15 @@ export const PlaylistsPage = () => {
           return (
             <div className={s.item} key={playlist.id}>
               {isEditing ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <h2>Edit playlist</h2>
-                  <div>
-                    <input {...register('title')} placeholder={'title'} />
-                  </div>
-                  <div>
-                    <input {...register('description')} placeholder={'description'} />
-                  </div>
-                  <button type={'submit'}>edit playlist</button>
-                  <button type={'button'} onClick={() => editPlaylistHandler(null)}>
-                    cancel
-                  </button>
-                </form>
+                <EditPlaylistForm
+                  playlistId={playlist.id}
+                  setPlaylistId={setPlaylistId}
+                  editPlaylist={editPlaylistHandler}
+                  register={register}
+                  handleSubmit={handleSubmit}
+                />
               ) : (
-                <div>
-                  <div>title: {playlist.attributes.title}</div>
-                  <div>description: {playlist.attributes.description}</div>
-                  <div>userName: {playlist.attributes.user.name}</div>
-
-                  <button onClick={() => deletePlaylistHandler(playlist.id)}>delete</button>
-                  <button onClick={() => editPlaylistHandler(playlist.id)}>update</button>
-                </div>
+                <PlaylistItem playlist={playlist} editPlaylistHandler={editPlaylistHandler} />
               )}
             </div>
           )
