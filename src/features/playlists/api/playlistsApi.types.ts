@@ -57,6 +57,11 @@ export type RequestPlaylistArgs = {
 }
 
 export type UpdatePlaylistArgs = {
+  playlistId?: string | null
+  title: string
+  description: string
+}
+export type RequestUpdatePlaylistArgs = {
   data: {
     type: 'playlists'
     attributes: {
