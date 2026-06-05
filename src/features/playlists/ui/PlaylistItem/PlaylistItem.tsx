@@ -1,5 +1,7 @@
 import type { PlaylistData } from '@/features/playlists/api/playlistsApi.types.ts'
 import { useDeletePlaylistMutation } from '@/features/playlists/api/PlaylistsApi.ts'
+import defaultCover from '@/assets/images/default-playlist-cover.png'
+import s from './PlaylistItem.module.css'
 
 type PlaylistItemType = {
   playlist: PlaylistData
@@ -17,6 +19,7 @@ export const PlaylistItem = ({ playlist, editPlaylistHandler }: PlaylistItemType
 
   return (
     <div>
+      <img src={defaultCover} alt={'cover'} className={s.cover} />
       <div>title: {playlist.attributes.title}</div>
       <div>description: {playlist.attributes.description}</div>
       <div>userName: {playlist.attributes.user.name}</div>
