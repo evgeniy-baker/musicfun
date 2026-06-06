@@ -6,6 +6,7 @@ import type {
   RequestUpdatePlaylistArgs,
   UpdatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types.ts'
+import type { Images } from '@/common/types'
 
 export const playlistsApi = createApi({
   reducerPath: 'playlistsApi',
@@ -79,6 +80,19 @@ export const playlistsApi = createApi({
       },
     }),
 
+    uploadPlaylistCover: build.mutation<Images, { playlistId: string; file: File }>({
+      invalidatesTags: ['Playlists'],
+      query: ({ playlistId, file }) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        return {
+          method: 'post',
+          url: `/playlists/${playlistId}/images/main`,
+          body: formData,
+        }
+      },
+    }),
+
     //
   }),
 })
@@ -88,4 +102,5 @@ export const {
   useCreatePlaylistMutation,
   useDeletePlaylistMutation,
   useUpdatePlaylistMutation,
+  useUploadPlaylistCoverMutation,
 } = playlistsApi
