@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type {
   PlaylistData,
   PlaylistsResponse,
@@ -7,29 +6,17 @@ import type {
   UpdatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types.ts'
 import type { Images } from '@/common/types'
+import { baseApi } from '@/app/api/baseApi.ts'
 
-export const playlistsApi = createApi({
-  reducerPath: 'playlistsApi',
-  tagTypes: ['Playlists'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
-    headers: {
-      'API-KEY': import.meta.env.VITE_API_KEY,
-    },
-    prepareHeaders: (headers) => {
-      headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
-      return headers
-    },
-  }),
-
+export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, void>({
-      providesTags: ['Playlists'],
+      providesTags: ['Playlist'],
       query: () => '/playlists',
     }),
 
     createPlaylist: build.mutation<{ data: PlaylistData }, { title: string; description: string }>({
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
       query: ({ title, description }) => {
         const body: RequestPlaylistArgs = {
           data: {
@@ -49,7 +36,7 @@ export const playlistsApi = createApi({
     }),
 
     deletePlaylist: build.mutation<void, string>({
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
       query: (playlistId) => {
         return {
           method: 'delete',
@@ -59,7 +46,7 @@ export const playlistsApi = createApi({
     }),
 
     updatePlaylist: build.mutation<void, UpdatePlaylistArgs>({
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
       query: ({ playlistId, title }) => {
         const body: RequestUpdatePlaylistArgs = {
           data: {
@@ -81,7 +68,7 @@ export const playlistsApi = createApi({
     }),
 
     uploadPlaylistCover: build.mutation<Images, { playlistId: string; file: File }>({
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
       query: ({ playlistId, file }) => {
         const formData = new FormData()
         formData.append('file', file)

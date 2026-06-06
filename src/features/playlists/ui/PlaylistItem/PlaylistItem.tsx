@@ -16,8 +16,8 @@ export const PlaylistItem = ({ playlist, editPlaylistHandler }: PlaylistItemType
   const [deletePlaylist] = useDeletePlaylistMutation()
   const [uploadPlaylistCover] = useUploadPlaylistCoverMutation()
 
-  const cover = playlist.attributes.images.main.find((img) => img.type === 'original')
-  const url = cover?.url ? cover?.url : defaultCover
+  const originalCover = playlist.attributes.images.main.find((img) => img.type === 'original')
+  const url = originalCover ? originalCover.url : defaultCover
 
   const deletePlaylistHandler = (playlistId: string) => {
     if (confirm('Вы хотите удалить плэйлист?')) {
@@ -34,7 +34,7 @@ export const PlaylistItem = ({ playlist, editPlaylistHandler }: PlaylistItemType
   return (
     <div>
       <img src={url} alt={'cover'} className={s.cover} />
-      <input type="file" onChange={uploadCoverHandler} />
+      <input type="file" accept={'image/png'} onChange={uploadCoverHandler} />
       <div>title: {playlist.attributes.title}</div>
       <div>description: {playlist.attributes.description}</div>
       <div>userName: {playlist.attributes.user.name}</div>
