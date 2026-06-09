@@ -1,11 +1,7 @@
 import type { PlaylistData } from '@/features/playlists/api/playlistsApi.types.ts'
-import {
-  useDeletePlaylistMutation,
-  useUploadPlaylistCoverMutation,
-} from '@/features/playlists/api/PlaylistsApi.ts'
-import defaultCover from '@/assets/images/default-playlist-cover.png'
-import s from './PlaylistItem.module.css'
-import type { ChangeEvent } from 'react'
+import { useDeletePlaylistMutation } from '@/features/playlists/api/PlaylistsApi.ts'
+import { PlaylistCover } from '@/features/playlists/ui/PlaylistItem/PlaylistCover/PlaylistCover.tsx'
+import { PlaylistDescription } from '@/features/playlists/ui/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx'
 
 type PlaylistItemType = {
   playlist: PlaylistData
@@ -14,31 +10,17 @@ type PlaylistItemType = {
 
 export const PlaylistItem = ({ playlist, editPlaylistHandler }: PlaylistItemType) => {
   const [deletePlaylist] = useDeletePlaylistMutation()
-  const [uploadPlaylistCover] = useUploadPlaylistCoverMutation()
-
-  const originalCover = playlist.attributes.images.main.find((img) => img.type === 'original')
-  const url = originalCover ? originalCover.url : defaultCover
 
   const deletePlaylistHandler = (playlistId: string) => {
-    if (confirm('Вы хотите удалить плэйлист?')) {
+    if (confirm('Do you want to delete the playlist?')) {
       deletePlaylist(playlistId)
     }
   }
 
-  const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.length && event.target.files[0]
-    if (!file) return
-    uploadPlaylistCover({ playlistId: playlist.id, file })
-  }
-
   return (
     <div>
-      <img src={url} alt={'cover'} className={s.cover} />
-      <input type="file" accept={'image/png'} onChange={uploadCoverHandler} />
-      <div>title: {playlist.attributes.title}</div>
-      <div>description: {playlist.attributes.description}</div>
-      <div>userName: {playlist.attributes.user.name}</div>
-
+      <PlaylistCover playlistId={playlist.id} images={playlist.attributes.images} />
+      <PlaylistDescription attributes={playlist.attributes} />
       <button onClick={() => deletePlaylistHandler(playlist.id)}>delete</button>
       <button onClick={() => editPlaylistHandler(playlist)}>update</button>
     </div>
