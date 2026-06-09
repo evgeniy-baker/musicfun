@@ -1,4 +1,5 @@
 import type {
+  FetchPlaylistsArgs,
   PlaylistData,
   PlaylistsResponse,
   RequestPlaylistArgs,
@@ -10,9 +11,9 @@ import { baseApi } from '@/app/api/baseApi.ts'
 
 export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    fetchPlaylists: build.query<PlaylistsResponse, void>({
+    fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
       providesTags: ['Playlist'],
-      query: () => '/playlists',
+      query: (params) => ({ url: '/playlists', params }),
     }),
 
     createPlaylist: build.mutation<{ data: PlaylistData }, { title: string; description: string }>({

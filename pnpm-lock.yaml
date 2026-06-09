@@ -23,6 +23,9 @@ dependencies:
   react-router:
     specifier: ^7.16.0
     version: 7.16.0(react-dom@19.2.6)(react@19.2.6)
+  react-toastify:
+    specifier: ^11.1.0
+    version: 11.1.0(react-dom@19.2.6)(react@19.2.6)
 
 devDependencies:
   '@eslint/js':
@@ -818,6 +821,11 @@ packages:
     resolution: {integrity: sha512-iwSsYWaCOoh26cV8NwNRViHlrfUvYsHDfRVcbtmw0Kg6PJIZZXwMkj1442FYLBGkeUf1juAsU3DTfxW579mrPA==}
     dev: true
 
+  /clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
+    dev: false
+
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
     dev: true
@@ -1436,6 +1444,17 @@ packages:
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
       set-cookie-parser: 2.7.2
+    dev: false
+
+  /react-toastify@11.1.0(react-dom@19.2.6)(react@19.2.6):
+    resolution: {integrity: sha512-e9h23x3phN0wbFeB6yovmWp7lobzV4CaCH0LO8nVP6H7Y+3GbcLpIzMm9dJhcp1RXbpyfvjgpfXqO80QAmn7sg==}
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
+    dependencies:
+      clsx: 2.1.1
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
     dev: false
 
   /react@19.2.6:
