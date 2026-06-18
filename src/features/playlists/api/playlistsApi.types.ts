@@ -12,6 +12,7 @@ export type PlaylistData = {
   attributes: PlaylistAttributes
 }
 
+//  Pagination
 export type PlaylistMeta = {
   page: number
   pageSize: number
