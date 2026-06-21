@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const baseApi = createApi({
   reducerPath: 'playlistsApi',
   tagTypes: ['Playlist'],
-  // keepUnusedDataFor: 60,   <- Время жизки кэша
   refetchOnReconnect: true,
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
