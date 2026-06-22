@@ -6,9 +6,7 @@ export const tracksApi = baseApi.injectEndpoints({
     fetchTracks: build.infiniteQuery<FetchTracksResponse, void, string | undefined>({
       infiniteQueryOptions: {
         initialPageParam: undefined,
-        getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams, queryArg) => {
-          return '1'
-        },
+        getNextPageParam: (lastPage) => lastPage.meta.nextCursor,
       },
       query: ({ pageParam }) => ({
         url: `/playlists/tracks`,
