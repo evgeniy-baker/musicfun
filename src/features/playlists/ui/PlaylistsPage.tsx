@@ -40,6 +40,8 @@ export const PlaylistsPage = () => {
         onChange={(e) => searchPlaylistHandler(e)}
       />
 
+      {isLoading && <h1>Loading...</h1>}
+
       <PlaylistsList playlists={data?.data || []} isPlaylistsLoading={isLoading} />
 
       <Pagination

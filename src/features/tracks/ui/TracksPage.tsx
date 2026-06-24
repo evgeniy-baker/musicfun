@@ -4,7 +4,7 @@ import { LoadingTrigger } from '@/features/tracks/ui/LoadingTrigger/LoadingTrigg
 import { useInfiniteScroll } from '@/common/hoocks'
 
 export const TracksPage = () => {
-  const { data, hasNextPage, isLoading, isFetching, isFetchingNextPage, fetchNextPage } =
+  const { data, hasNextPage, isFetching, isLoading, isFetchingNextPage, fetchNextPage } =
     useFetchTracksInfiniteQuery()
 
   const { observerRef } = useInfiniteScroll({ fetchNextPage, hasNextPage, isFetching })
@@ -14,6 +14,9 @@ export const TracksPage = () => {
   return (
     <div>
       <h1>Tracks page</h1>
+
+      {isLoading && <h1>Loading...</h1>}
+
       <TracksList tracks={pages} />
 
       {hasNextPage && (
